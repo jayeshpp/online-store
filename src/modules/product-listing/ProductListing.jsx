@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination";
 import { Product } from "./Product";
 import {
@@ -26,7 +26,7 @@ TODO
 function ProductListing() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let location = useLocation();
+  const [searchParams] = useSearchParams();
   const products = useSelector(selectAllProducts);
   const productStatus = useSelector(getProductsStatus);
   const error = useSelector(getProductsError);
@@ -42,10 +42,10 @@ function ProductListing() {
   }
 
   useEffect(() => {
-    const filters = parse(location.search);
+    const filters = parse(searchParams);
     dispatch(fetchProductsAsync(filters));
     dispatch(updateFilter(filters));
-  }, [location, dispatch]);
+  }, [searchParams, dispatch]);
 
   let content;
   if (productStatus === "loading") {
